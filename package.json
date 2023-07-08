@@ -1,0 +1,52 @@
+{
+  "name": "web-scrapper",
+  "version": "1.0.0",
+  "description": "Scrap the content from a webpage",
+  "main": "index.js",
+  "scripts": {
+    "eslint": "npx eslint ./ --no-error-on-unmatched-pattern",
+    "prettier": "npx prettier --check --ignore-unknown ./**/*",
+    "dev": "next dev",
+    "prebuild": "npm run prettier && npm run eslint",
+    "build": "next build",
+    "start": "next start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Raaghu/web-scrapper.git"
+  },
+  "keywords": [
+    "web-scrapper",
+    "web-page-extract",
+    "extract-web"
+  ],
+  "author": "Raghavendra K R <raghavendra@sodaru.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Raaghu/web-scrapper/issues"
+  },
+  "homepage": "https://github.com/Raaghu/web-scrapper#readme",
+  "devDependencies": {
+    "@types/node": "20.4.0",
+    "@types/react": "18.2.14",
+    "eslint-config-sodaru": "^1.0.1",
+    "jsdom": "^22.1.0",
+    "next": "^13.4.9",
+    "prettier-config-sodaru": "^1.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tslib": "^2.6.0",
+    "typescript": "^5.1.6"
+  },
+  "eslintConfig": {
+    "extends": [
+      "eslint-config-sodaru",
+      "next"
+    ]
+  },
+  "prettier": "prettier-config-sodaru",
+  "dependencies": {
+    "@types/jsdom": "^21.1.1",
+    "eslint-config-next": "^13.4.9"
+  }
+}
