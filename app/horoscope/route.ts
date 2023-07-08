@@ -24,10 +24,16 @@ const selector = async (
 };
 
 const fetchHoroscope = async (zodSign: string) => {
-  const { PAGE, SELECTOR, TEXT_CONTENT } = process.env;
+  const { PAGE, SELECTOR, TEXT_CONTENT, REPLACE_FROM, REPLACE_TO } =
+    process.env;
   const ZOD_PAGE = PAGE?.replace("ZOD_SIGN", zodSign);
 
-  return ZOD_PAGE ? await selector(ZOD_PAGE, SELECTOR, !!TEXT_CONTENT) : "";
+  let h = ZOD_PAGE ? await selector(ZOD_PAGE, SELECTOR, !!TEXT_CONTENT) : "";
+  if (REPLACE_FROM && REPLACE_TO) {
+    h = h.replaceAll(REPLACE_FROM, REPLACE_TO);
+  }
+
+  return h;
 };
 
 const cache = {};
