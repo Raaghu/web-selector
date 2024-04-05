@@ -1,4 +1,5 @@
 import { JSDOM } from "jsdom";
+import { NextRequest } from "next/server";
 
 const timeFormatTo12Hours = (timeIn24Hour: string) => {
   const [hour, minute] = timeIn24Hour
@@ -75,25 +76,27 @@ const selector = async (page: string) => {
   return JSON.stringify(data);
 };
 
-const fetchPanchang = async () => {
-  return await selector(process.env.P_PAGE);
+const fetchPanchang = async (date: string) => {
+  return await selector(process.env.P_PAGE + "&date=" + date);
 };
 
-const cache = {} as { date: string; content: string };
+const cache = {} as Record<string, { date: string; content: string }>;
 
-const cachedFetch = async () => {
+const cachedFetch = async (date: string) => {
   const today = new Date().toLocaleDateString("en-IN", {
     timeZone: "Asia/Kolkata"
   });
-  if (!(cache && cache.date == today)) {
-    cache.date = today;
-    cache.content = await fetchPanchang();
+  if (!(cache[date] && cache[date].date == today)) {
+    cache[date] = { date: today, content: await fetchPanchang(date) };
   }
-  return cache.content;
+  return cache[date].content;
 };
 
-export async function GET() {
-  const data = await cachedFetch();
+export async function GET(request: NextRequest) {
+  const { searchParams } = new URL(request.url);
+  const date = searchParams.get("date");
+
+  const data = await cachedFetch(date);
 
   return new Response(data, {
     status: 200
