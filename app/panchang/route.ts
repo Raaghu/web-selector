@@ -94,7 +94,16 @@ const cachedFetch = async (date: string) => {
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
-  const date = searchParams.get("date");
+  let date = searchParams.get("date");
+  if (!date) {
+    const today = new Date();
+    date =
+      today.getDate().toString().padStart(2, "0") +
+      "-" +
+      (today.getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      today.getFullYear();
+  }
 
   const data = await cachedFetch(date);
 
