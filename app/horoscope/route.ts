@@ -11,15 +11,17 @@ const selector = async (
 
   if (selector) {
     const { document } = new JSDOM(data).window;
-    const selectedDom = document.querySelector(selector);
-    if (selectedDom) {
-      data = textContent
-        ? selectedDom.textContent || ""
-        : selectedDom.outerHTML;
+    const selectedDom = document.querySelectorAll(selector);
+    if (selectedDom.length > 0) {
+      data = "";
+      selectedDom.forEach(s => {
+        data += "\n" + (textContent ? s.textContent : s.outerHTML);
+      });
     } else {
       data = "";
     }
   }
+  data = data.trim();
   return data;
 };
 

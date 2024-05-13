@@ -25,37 +25,24 @@ const selector = async (page: string) => {
 
   if (selector) {
     const { document } = new JSDOM(result).window;
-    const sunRiseSpan = document.querySelector("span#sunsignvalue");
-    const panchangaDiv =
-      sunRiseSpan.parentElement.parentElement.parentElement.parentElement;
-    const sunRise = sunRiseSpan.textContent;
-    const sunSet = panchangaDiv.querySelector(
-      "div > div:nth-child(2) > div:nth-child(2) > span"
-    ).textContent;
+    const panchangaDiv = document.querySelector(
+      "div.panchang-detail div.two-columns"
+    );
+    const sunRise = panchangaDiv.querySelector("span.sunrise").textContent;
+    const sunSet = panchangaDiv.querySelector("span.sunset").textContent;
     const tithi = panchangaDiv.querySelector(
-      "div > div:nth-child(3) > div:nth-child(2) > span"
+      "div:nth-child(4) > span"
     ).textContent;
-    const yoga = panchangaDiv.querySelector(
-      "div > div:nth-child(4) > div:nth-child(2) > span"
-    ).textContent;
-    const yamaghantaKaal = panchangaDiv.querySelector(
-      "div > div:nth-child(6) > div:nth-child(2) > span"
-    ).textContent;
+    const yoga = panchangaDiv.querySelector("span.yoga").textContent;
+    const yamaghantaKaal =
+      panchangaDiv.querySelector("span.yamaghanta").textContent;
     const paksha = panchangaDiv.querySelector(
-      "div:nth-child(2) > div:nth-child(1) > div:nth-child(2) > span"
+      "span.pakshafirstword"
     ).textContent;
-    const nakshatra = panchangaDiv.querySelector(
-      "div:nth-child(2) > div:nth-child(2) > div:nth-child(2) > span"
-    ).textContent;
-    const karana = panchangaDiv.querySelector(
-      "div:nth-child(2) > div:nth-child(3) > div:nth-child(2) > span"
-    ).textContent;
-    const moonsign = panchangaDiv.querySelector(
-      "div:nth-child(2) > div:nth-child(4) > div:nth-child(2) > span"
-    ).textContent;
-    const rahuKaal = panchangaDiv.querySelector(
-      "div:nth-child(2) > div:nth-child(5) > div:nth-child(2) > span"
-    ).textContent;
+    const nakshatra = panchangaDiv.querySelector("span.nakshatra").textContent;
+    const karana = panchangaDiv.querySelector("span.karana").textContent;
+    const moonsign = panchangaDiv.querySelector("span.moonsign").textContent;
+    const rahuKaal = panchangaDiv.querySelector("span.rahukal").textContent;
 
     data = {
       sunRise: timeFormatTo12Hours(sunRise),
