@@ -50,14 +50,19 @@ const selector = async (page: string) => {
       tithi,
       yoga,
       yamaghantaKaal: yamaghantaKaal
-        .split(" to ")
+        .split("to")
+        .map(t => t.trim())
         .map(timeFormatTo12Hours)
         .join(" to "),
       paksha,
       nakshatra,
       karana,
       moonsign,
-      rahuKaal: rahuKaal.split(" to ").map(timeFormatTo12Hours).join(" to ")
+      rahuKaal: rahuKaal
+        .split("to")
+        .map(t => t.trim())
+        .map(timeFormatTo12Hours)
+        .join(" to ")
     };
   }
   return JSON.stringify(data);
