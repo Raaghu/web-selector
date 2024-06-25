@@ -22,7 +22,7 @@ const selector = async (page: string) => {
   const result = await res.text();
 
   // eslint-disable-next-line no-console
-  console.info(page, result);
+  console.info(page, result.length);
 
   let data = {};
 
