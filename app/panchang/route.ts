@@ -21,6 +21,9 @@ const selector = async (page: string) => {
   const res = await fetch(page);
   const result = await res.text();
 
+  // eslint-disable-next-line no-console
+  console.info(page, result);
+
   let data = {};
 
   if (selector) {
