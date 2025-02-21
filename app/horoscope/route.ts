@@ -25,15 +25,19 @@ const selector = async (
   return data;
 };
 
-const fetchHoroscope = async (zodSign: string) => {
+const fetchHoroscope = async (zodSign: string, tomorrow?: string) => {
   const {
+    HS_TOMO_PAGE,
     HS_PAGE,
     HS_SELECTOR,
     HS_TEXT_CONTENT,
     HS_REPLACE_FROM,
     HS_REPLACE_TO
   } = process.env;
-  const ZOD_PAGE = HS_PAGE?.replace("ZOD_SIGN", zodSign);
+
+  const page = tomorrow == "true" ? HS_TOMO_PAGE : HS_PAGE;
+
+  const ZOD_PAGE = page?.replace("ZOD_SIGN", zodSign);
 
   let h = ZOD_PAGE
     ? await selector(ZOD_PAGE, HS_SELECTOR, !!HS_TEXT_CONTENT)
@@ -47,14 +51,18 @@ const fetchHoroscope = async (zodSign: string) => {
 
 const cache = {};
 
-const cachedFetch = async (zodSign: string) => {
-  const today = new Date().toLocaleDateString("en-IN", {
+const cachedFetch = async (zodSign: string, tomorrow?: string) => {
+  let dateObj = new Date();
+  if (tomorrow == "true") {
+    dateObj = new Date(Date.now() + 24 * 60 * 60 * 1000);
+  }
+  const date = dateObj.toLocaleDateString("en-IN", {
     timeZone: "Asia/Kolkata"
   });
-  if (!(cache[zodSign] && cache[zodSign].date == today)) {
+  if (!(cache[zodSign] && cache[zodSign].date == date)) {
     cache[zodSign] = {
-      date: today,
-      content: await fetchHoroscope(zodSign)
+      date: date,
+      content: await fetchHoroscope(zodSign, tomorrow)
     };
   }
   return cache[zodSign].content;
@@ -63,12 +71,13 @@ const cachedFetch = async (zodSign: string) => {
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const zodSign = searchParams.get("zod-sign");
+  const tomorrow = searchParams.get("tomorrow");
 
   if (zodSign == null) {
     return new Response("searchParam zod-sign is required", { status: 400 });
   }
 
-  const data = await cachedFetch(zodSign);
+  const data = await cachedFetch(zodSign, tomorrow);
 
   return new Response(data, {
     status: 200
